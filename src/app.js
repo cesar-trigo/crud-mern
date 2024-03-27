@@ -55,13 +55,6 @@ app.get("/products/:pid", async (req, res) => {
   }
 });
 
-app.get("*", (req, res) => {
-  res.setHeader("Content-Type", "text/plain");
-  res.status(404).json({
-    message: "error 404 - page not found",
-  });
-});
-
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
