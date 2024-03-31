@@ -4,7 +4,6 @@ export default class ProductManager {
   #products;
 
   constructor(rutaArchivo) {
-    this.#products = [];
     this.path = rutaArchivo; //--------hay cambiar a una forma correcta!!!
   }
 
@@ -29,15 +28,17 @@ export default class ProductManager {
   addProduct = async obj => {
     //arreglar
     try {
-      let products = this.#products;
+      let products = await this.readFile();
       //configuro el obj
       let newProduct = {
         title: obj.title,
         description: obj.description,
         price: obj.price,
-        thumbnail: obj.thumbnail,
+        thumbnails: obj.thumbnails ?? [],
         code: obj.code,
         stock: obj.stock,
+        category: obj.category,
+        status: true,
       };
 
       if (products.some(product => product.code === newProduct.code)) {
