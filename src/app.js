@@ -1,5 +1,5 @@
 import express from "express";
-import ProductManager from "./classes/productManager.js";
+import ProductManager from "./dao/productManager.js";
 import __dirname from "./utils.js";
 import { join } from "path";
 
