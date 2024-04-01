@@ -84,4 +84,39 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:pid", async (req, res) => {
+  let { pid } = req.params;
+
+  const { title, description, code, price, stock, thumbnails, category } = req.body;
+
+  const typeString = [title, description, code, category],
+    typeNumber = [price, stock];
+
+  try {
+    if (typeString.some(e => typeof e !== "string")) {
+      return res.status(404).json({ error: `formato invalido` });
+    }
+
+    if (thumbnails && thumbnails.some(e => typeof e !== "string")) {
+      return res.status(404).json({ error: `formato invalido` });
+    }
+
+    if (typeNumber.some(e => typeof e !== "number")) {
+      return res.status(404).json({ error: `formato invalido` });
+    }
+
+    if (typeNumber.some(e => e < 0)) {
+      return res.status(404).json({ error: `el numero no debe ser menor a 0` });
+    }
+
+    return res.status(200).json(await productManager.updateProduct(Number(pid), req.body));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
+  }
+});
+
 export default router;
