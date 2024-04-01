@@ -97,14 +97,21 @@ export default class ProductManager {
     try {
       const data = await this.readFile();
 
-      const idEvent = data.find(produc => produc.id === idProd);
-      if (!idEvent) {
+      const idProduct = data.find(produc => produc.id === idProd);
+
+      if (!idProduct) {
         throw new Error(`error id: ${idProd} not found`);
       }
 
+      if (data.some(product => product.code === obj.code)) {
+        throw new Error("Repeated code");
+      }
+
       Object.keys(obj).forEach(prop => {
-        idEvent[prop] = obj[prop];
+        idProduct[prop] = obj[prop];
       });
+
+      idProduct.id = idProduct.id;
 
       await this.sendFile(data);
     } catch (error) {
