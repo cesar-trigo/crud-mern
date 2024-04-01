@@ -4,7 +4,6 @@ export default class ProductManager {
   #products;
 
   constructor(rutaArchivo) {
-    this.#products = [];
     this.path = rutaArchivo; //--------hay cambiar a una forma correcta!!!
   }
 
@@ -29,15 +28,17 @@ export default class ProductManager {
   addProduct = async obj => {
     //arreglar
     try {
-      let products = this.#products;
+      let products = await this.readFile();
       //configuro el obj
       let newProduct = {
         title: obj.title,
         description: obj.description,
         price: obj.price,
-        thumbnail: obj.thumbnail,
+        thumbnails: obj.thumbnails ?? [],
         code: obj.code,
         stock: obj.stock,
+        category: obj.category,
+        status: true,
       };
 
       if (products.some(product => product.code === newProduct.code)) {
@@ -96,14 +97,21 @@ export default class ProductManager {
     try {
       const data = await this.readFile();
 
-      const idEvent = data.find(produc => produc.id === idProd);
-      if (!idEvent) {
+      const idProduct = data.find(produc => produc.id === idProd);
+
+      if (!idProduct) {
         throw new Error(`error id: ${idProd} not found`);
       }
 
+      if (data.some(product => product.code === obj.code)) {
+        throw new Error("Repeated code");
+      }
+
       Object.keys(obj).forEach(prop => {
-        idEvent[prop] = obj[prop];
+        idProduct[prop] = obj[prop];
       });
+
+      idProduct.id = idProduct.id;
 
       await this.sendFile(data);
     } catch (error) {
