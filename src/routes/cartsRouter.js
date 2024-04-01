@@ -21,23 +21,23 @@ router.post("/", async (req, res) => {
   }
 });
 
-// router.get("/:cid", async (req, res) => {
-//   // res.setHeader("Content-Type", "text/plain");
-//   let { pid } = req.params;
-//   try {
-//     if (isNaN(pid) || pid <= 0) {
-//       return res.status(404).json({ error: "Product ID must be a positive integer" });
-//     }
+router.get("/:cid", async (req, res) => {
+  let { cid } = req.params;
 
-//     return res.status(200).json(await productManager.getProductById(Number(pid)));
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       error: "Internal Server Error",
-//       message: error.message,
-//     });
-//   }
-// });
+  try {
+    if (isNaN(cid) || cid <= 0) {
+      return res.status(404).json({ error: "Product ID must be a positive integer" });
+    }
+
+    return res.status(200).json(await cartManager.getCartById(Number(cid)));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
+  }
+});
 
 // router.post("/:cid/product/:pid", async (req, res) => {
 //   // res.setHeader("Content-Type", "text/plain");

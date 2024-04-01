@@ -45,4 +45,20 @@ export default class CartManager {
       throw new Error(error.message);
     }
   };
+
+  // METODO PARA BUSCAR POR ID EN JSON
+  getCartById = async cartId => {
+    try {
+      const carts = await this.readFile();
+
+      const cartById = carts.find(e => e.id === cartId);
+
+      if (!cartById) {
+        throw new Error(`Does not work wrong id: ${cartId}`);
+      }
+      return cartById.products;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
