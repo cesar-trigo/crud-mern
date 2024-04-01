@@ -93,6 +93,10 @@ router.put("/:pid", async (req, res) => {
     typeNumber = [price, stock];
 
   try {
+    if (isNaN(pid) || pid <= 0) {
+      return res.status(404).json({ error: "Product ID must be a positive integer" });
+    }
+
     if (typeString.some(e => typeof e !== "string")) {
       return res.status(404).json({ error: `formato invalido` });
     }
@@ -110,6 +114,24 @@ router.put("/:pid", async (req, res) => {
     }
 
     return res.status(200).json(await productManager.updateProduct(Number(pid), req.body));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
+  }
+});
+
+router.delete("/:pid", async (req, res) => {
+  const { pid } = req.params;
+
+  try {
+    if (isNaN(pid) || pid <= 0) {
+      return res.status(404).json({ error: "Product ID must be a positive integer" });
+    }
+
+    return res.status(200).json(await productManager.deleteProduct(Number(pid)));
   } catch (error) {
     console.error(error);
     return res.status(500).json({
