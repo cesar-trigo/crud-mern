@@ -1,5 +1,6 @@
 import { Router } from "express";
 import CartManager from "../dao/cartManager.js";
+import ProductManager from "../dao/productManager.js";
 import { join } from "path";
 import __dirname from "../utils.js";
 
@@ -7,7 +8,9 @@ import __dirname from "../utils.js";
 
 const router = Router();
 const filepath = join(__dirname, "data", "carrito.json");
+const filepathP = join(__dirname, "data", "products.json");
 const cartManager = new CartManager(filepath);
+const productManager = new ProductManager(filepathP);
 
 router.post("/", async (req, res) => {
   try {
@@ -39,38 +42,48 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-// router.post("/:cid/product/:pid", async (req, res) => {
-//   // res.setHeader("Content-Type", "text/plain");
-//   const { title, description, code, price, stock, thumbnails, category } = req.body;
+router.post("/:cid/product/:pid", async (req, res) => {
+  const { cid, pid } = req.params;
 
-//   const typeString = [title, description, code, category],
-//     typeNumber = [price, stock];
+  const products = await productManager.getProducts();
 
-//   try {
-//     if (typeString.some(e => typeof e !== "string")) {
-//       return res.status(404).json({ error: `formato invalido` });
-//     }
+  const param = {
+    cid: Number(cid),
+    pid: Number(pid),
+    products: products,
+  };
 
-//     if (thumbnails && thumbnails.some(e => typeof e !== "string")) {
-//       return res.status(404).json({ error: `formato invalido` });
-//     }
+  // res.setHeader("Content-Type", "text/plain");
+  /*   const { title, description, code, price, stock, thumbnails, category } = req.body;
 
-//     if (typeNumber.some(e => typeof e !== "number")) {
-//       return res.status(404).json({ error: `formato invalido` });
-//     }
+  const typeString = [title, description, code, category],
+    typeNumber = [price, stock];
+ */
+  try {
+    /*     if (typeString.some(e => typeof e !== "string")) {
+      return res.status(404).json({ error: `formato invalido` });
+    }
 
-//     if (typeNumber.some(e => e < 0)) {
-//       return res.status(404).json({ error: `el numero no debe ser menor a 0` });
-//     }
+    if (thumbnails && thumbnails.some(e => typeof e !== "string")) {
+      return res.status(404).json({ error: `formato invalido` });
+    }
 
-//     return res.status(200).json(await productManager.addProduct(req.body));
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       error: "Internal Server Error",
-//       message: error.message,
-//     });
-//   }
-// });
+    if (typeNumber.some(e => typeof e !== "number")) {
+      return res.status(404).json({ error: `formato invalido` });
+    }
+
+    if (typeNumber.some(e => e < 0)) {
+      return res.status(404).json({ error: `el numero no debe ser menor a 0` });
+    } */
+
+    return res.status(200).json(await cartManager.addProductToCart(param));
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+      message: error.message,
+    });
+  }
+});
 
 export default router;

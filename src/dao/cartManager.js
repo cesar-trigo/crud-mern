@@ -48,15 +48,48 @@ export default class CartManager {
 
   // METODO PARA BUSCAR POR ID EN JSON
   getCartById = async cartId => {
-    try {
-      const carts = await this.readFile();
+    const carts = await this.readFile();
 
+    try {
       const cartById = carts.find(e => e.id === cartId);
 
       if (!cartById) {
         throw new Error(`Does not work wrong id: ${cartId}`);
       }
+
       return cartById.products;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  addProductToCart = async param => {
+    try {
+      const carts = await this.readFile();
+
+      const cartById = carts.find(car => car.id === param.cid); // aca encontre el carrito que dentro tiene productos
+      const productById = param.products.find(pro => pro.id === param.pid); // aca tengo los productos TODOS y filtro
+
+      const existingProduct = cartById.products.find(product => product.product === productById.id);
+      // aca busco si dentro del arreglo exite el producto
+
+      if (existingProduct) {
+        existingProduct.quantity++;
+        await this.sendFile(carts);
+        return `se sumo unproducto`;
+      }
+
+      const newProduct = {
+        product: productById.id,
+        quantity: 1,
+      };
+
+      cartById.products.push(newProduct);
+
+      //y actualizar el archivo
+      await this.sendFile(carts);
+
+      return "product Loaded Successfully";
     } catch (error) {
       throw new Error(error.message);
     }
