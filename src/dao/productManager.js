@@ -1,8 +1,8 @@
 import fs from "fs";
 
 export default class ProductManager {
-  constructor(rutaArchivo) {
-    this.path = rutaArchivo;
+  constructor(filepath) {
+    this.path = filepath;
   }
 
   //PARA LEER EL ACHIVO JSON
