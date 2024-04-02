@@ -67,11 +67,10 @@ export default class CartManager {
     try {
       const carts = await this.readFile();
 
-      const cartById = carts.find(car => car.id === param.cid); // aca encontre el carrito que dentro tiene productos
-      const productById = param.products.find(pro => pro.id === param.pid); // aca tengo los productos TODOS y filtro
+      const cartById = carts.find(car => car.id === param.cid);
+      const productById = param.products.find(pro => pro.id === param.pid);
 
       const existingProduct = cartById.products.find(product => product.product === productById.id);
-      // aca busco si dentro del arreglo exite el producto
 
       if (existingProduct) {
         existingProduct.quantity++;
