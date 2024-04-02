@@ -45,36 +45,23 @@ router.get("/:cid", async (req, res) => {
 router.post("/:cid/product/:pid", async (req, res) => {
   const { cid, pid } = req.params;
 
-  const products = await productManager.getProducts();
-
-  const param = {
-    cid: Number(cid),
-    pid: Number(pid),
-    products: products,
-  };
-
-  // res.setHeader("Content-Type", "text/plain");
-  /*   const { title, description, code, price, stock, thumbnails, category } = req.body;
-
-  const typeString = [title, description, code, category],
-    typeNumber = [price, stock];
- */
   try {
-    /*     if (typeString.some(e => typeof e !== "string")) {
-      return res.status(404).json({ error: `formato invalido` });
+    const product = await productManager.getProductById(Number(pid));
+
+    console.log(pid);
+    if (isNaN(cid) || isNaN(pid)) {
+      return res.status(400).json({ error: "must be numbers" });
     }
 
-    if (thumbnails && thumbnails.some(e => typeof e !== "string")) {
-      return res.status(404).json({ error: `formato invalido` });
+    if (product === undefined) {
+      return res.status(400).json({ error: "error in product data" });
     }
 
-    if (typeNumber.some(e => typeof e !== "number")) {
-      return res.status(404).json({ error: `formato invalido` });
-    }
-
-    if (typeNumber.some(e => e < 0)) {
-      return res.status(404).json({ error: `el numero no debe ser menor a 0` });
-    } */
+    const param = {
+      cid: Number(cid),
+      pid: Number(pid),
+      product: product,
+    };
 
     return res.status(200).json(await cartManager.addProductToCart(param));
   } catch (error) {

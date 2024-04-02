@@ -1,8 +1,8 @@
 import fs from "fs";
 
 export default class CartManager {
-  constructor(rutaArchivo) {
-    this.path = rutaArchivo;
+  constructor(filepath) {
+    this.path = filepath;
   }
   //PARA LEER EL ACHIVO JSON
   readFile = async () => {
@@ -17,16 +17,14 @@ export default class CartManager {
     try {
       await fs.promises.writeFile(this.path, JSON.stringify(arr, null, 2));
     } catch (error) {
-      throw new Error(`error al grabar archivo`);
+      throw new Error(`Error saving file`);
     }
   };
 
-  // METODO PARA AGREGAR PRODUCTOS
   addCart = async () => {
     try {
       const carts = await this.readFile();
 
-      // Asignar un nuevo ID después de actualizar el archivo
       const id = Math.max(...carts.map(e => e.id), 0) + 1;
 
       let newCart = {
@@ -34,10 +32,8 @@ export default class CartManager {
         products: [],
       };
 
-      // Agregar el nuevo producto al array de datos
       carts.push(newCart);
 
-      //y actualizar el archivo
       await this.sendFile(carts);
 
       return "cart Loaded Successfully";
@@ -46,12 +42,11 @@ export default class CartManager {
     }
   };
 
-  // METODO PARA BUSCAR POR ID EN JSON
   getCartById = async cartId => {
     const carts = await this.readFile();
 
     try {
-      const cartById = carts.find(e => e.id === cartId);
+      const cartById = carts.find(car => car.id === cartId);
 
       if (!cartById) {
         throw new Error(`Does not work wrong id: ${cartId}`);
@@ -64,31 +59,23 @@ export default class CartManager {
   };
 
   addProductToCart = async param => {
+    const carts = await this.readFile();
+
     try {
-      const carts = await this.readFile();
-
       const cartById = carts.find(car => car.id === param.cid);
-      const productById = param.products.find(pro => pro.id === param.pid);
 
-      const existingProduct = cartById.products.find(product => product.product === productById.id);
-
-      if (existingProduct) {
-        existingProduct.quantity++;
-        await this.sendFile(carts);
-        return `se sumo unproducto`;
+      if (!cartById) {
+        throw new Error(`There is no cart with ID ${param.cid}`);
       }
+      const existingProduct = cartById.products.findIndex(pro => pro.product === param.product.id);
 
-      const newProduct = {
-        product: productById.id,
-        quantity: 1,
-      };
+      existingProduct !== -1
+        ? cartById.products[existingProduct].quantity++
+        : cartById.products.push({ product: param.product.id, quantity: 1 });
 
-      cartById.products.push(newProduct);
-
-      //y actualizar el archivo
       await this.sendFile(carts);
 
-      return "product Loaded Successfully";
+      return existingProduct !== -1 ? "Product quantity incremented" : "Product added to cart";
     } catch (error) {
       throw new Error(error.message);
     }
