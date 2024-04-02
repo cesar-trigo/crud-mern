@@ -1,16 +1,14 @@
 import fs from "fs";
 
 export default class ProductManager {
-  #products;
-
   constructor(rutaArchivo) {
-    this.path = rutaArchivo; //--------hay cambiar a una forma correcta!!!
+    this.path = rutaArchivo;
   }
 
   //PARA LEER EL ACHIVO JSON
   readFile = async () => {
     if (fs.existsSync(this.path)) {
-      return JSON.parse(await fs.promises.readFile(this.path, { encoding: "utf-8" })); //--------hay que arreglar!!!
+      return JSON.parse(await fs.promises.readFile(this.path, { encoding: "utf-8" }));
     }
     return [];
   };
@@ -18,7 +16,7 @@ export default class ProductManager {
   //PARA ACTULIZAR ACHIVO JSON
   sendFile = async arr => {
     try {
-      await fs.promises.writeFile(this.path, JSON.stringify(arr, null, 2)); //--------hay que arreglar!!!!
+      await fs.promises.writeFile(this.path, JSON.stringify(arr, null, 2));
     } catch (error) {
       console.error("Error updating file");
     }
@@ -26,7 +24,6 @@ export default class ProductManager {
 
   // METODO PARA AGREGAR PRODUCTOS
   addProduct = async obj => {
-    //arreglar
     try {
       let products = await this.readFile();
       //configuro el obj
@@ -53,7 +50,7 @@ export default class ProductManager {
       }
 
       // Asignar un nuevo ID después de actualizar el archivo
-      let id = Math.max(...products.map(e => e.id), 0) + 1; //--------hay que revisar!!!!
+      let id = Math.max(...products.map(e => e.id), 0) + 1;
       newProduct.id = id;
 
       // Agregar el nuevo producto al array de datos
@@ -127,7 +124,9 @@ export default class ProductManager {
       const productById = data.findIndex(e => e.id === prodId);
 
       return !(productById >= 0)
-        ? console.error(`Not found`)
+        ? (() => {
+            throw new Error(`Not found`);
+          })()
         : (data.splice(productById, 1), await this.sendFile(data));
     } catch (error) {
       throw new Error(error.message);
