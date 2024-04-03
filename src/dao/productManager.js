@@ -59,7 +59,7 @@ export default class ProductManager {
       //y actualizar el archivo
       await this.sendFile(products);
 
-      return "Product Loaded Successfully";
+      return { message: "Product Loaded Successfully", product: newProduct };
     } catch (error) {
       throw new Error(error.message);
     }
@@ -111,6 +111,8 @@ export default class ProductManager {
       idProduct.id = idProduct.id;
 
       await this.sendFile(data);
+
+      return { message: "Product updated successfully", product: idProduct };
     } catch (error) {
       throw new Error(error.message);
     }

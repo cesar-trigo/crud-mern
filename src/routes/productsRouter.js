@@ -51,7 +51,6 @@ router.get("/:pid", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  // res.setHeader("Content-Type", "text/plain");
   const { title, description, code, price, stock, thumbnails, category } = req.body;
 
   const typeString = [title, description, code, category],
@@ -74,7 +73,9 @@ router.post("/", async (req, res) => {
       return res.status(404).json({ error: `el numero no debe ser menor a 0` });
     }
 
-    return res.status(200).json(await productManager.addProduct(req.body));
+    const result = await productManager.addProduct(req.body);
+
+    return res.status(201).json(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({
