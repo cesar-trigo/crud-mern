@@ -1,92 +1,126 @@
 [
   {
-    "title": "testing-1",
-    "description": "testing-1",
-    "price": 200,
-    "thumbnail": "testing-1",
-    "code": "4qwqw",
-    "stock": 27,
+    "title": "testing-01",
+    "description": "testing-01",
+    "price": 202,
+    "thumbnails": [],
+    "code": "pro1",
+    "stock": 22,
+    "category": "testing-01",
+    "status": true,
     "id": 1
   },
   {
-    "title": "testing-2",
-    "description": "testing-2",
+    "title": "testing-02",
+    "description": "testing-02",
     "price": 202,
-    "thumbnail": "testing-2",
-    "code": "332224",
+    "thumbnails": [],
+    "code": "pro2",
     "stock": 22,
+    "category": "testing-02",
+    "status": true,
     "id": 2
   },
   {
-    "title": "testing-3",
-    "description": "testing-3",
-    "price": 203,
-    "thumbnail": "testing-3",
-    "code": "33",
-    "stock": 23,
+    "title": "testing-03",
+    "description": "testing-03",
+    "price": 202,
+    "thumbnails": [],
+    "code": "pro3",
+    "stock": 22,
+    "category": "testing-03",
+    "status": true,
     "id": 3
   },
   {
-    "title": "testing-4",
-    "description": "testing-4",
-    "price": 204,
-    "thumbnail": "testing-4",
-    "code": "334",
-    "stock": 24,
+    "title": "testing-04",
+    "description": "testing-04",
+    "price": 202,
+    "thumbnails": [
+      "testing-04"
+    ],
+    "code": "pro4",
+    "stock": 22,
+    "category": "testing-04",
+    "status": true,
     "id": 4
   },
   {
-    "title": "testing-5",
-    "description": "testing-5",
-    "price": 205,
-    "thumbnail": "testing-5",
-    "code": "332225",
-    "stock": 25,
+    "title": "testing-05",
+    "description": "testing-05",
+    "price": 202,
+    "thumbnails": [
+      "testing-05"
+    ],
+    "code": "pro5",
+    "stock": 22,
+    "category": "testing-05",
+    "status": true,
     "id": 5
   },
   {
     "title": "testing-6",
-    "description": "testing-6",
-    "price": 206,
-    "thumbnail": "testing-6",
-    "code": "332226",
-    "stock": 26,
+    "description": "testing-06",
+    "price": 202,
+    "thumbnails": [
+      "testing-06"
+    ],
+    "code": "pro6",
+    "stock": 22,
+    "category": "testing-06",
+    "status": true,
     "id": 6
   },
   {
     "title": "testing-7",
-    "description": "testing-7",
-    "price": 207,
-    "thumbnail": "testing-7",
-    "code": "332227",
-    "stock": 27,
+    "description": "testing-07",
+    "price": 202,
+    "thumbnails": [
+      "testing-07"
+    ],
+    "code": "pro7",
+    "stock": 22,
+    "category": "testing-07",
+    "status": true,
     "id": 7
   },
   {
-    "title": "testing-28",
-    "description": "testing-28",
-    "price": 208,
-    "thumbnail": "testing-8",
-    "code": "332224",
-    "stock": 28,
+    "title": "testing-8",
+    "description": "testing-08",
+    "price": 202,
+    "thumbnails": [
+      "testing-08"
+    ],
+    "code": "pro8",
+    "stock": 22,
+    "category": "testing-08",
+    "status": true,
     "id": 8
   },
   {
     "title": "testing-9",
-    "description": "testing-9",
-    "price": 209,
-    "thumbnail": "testing-9",
-    "code": "332229",
-    "stock": 29,
+    "description": "testing-09",
+    "price": 202,
+    "thumbnails": [
+      "testing-09"
+    ],
+    "code": "pro9",
+    "stock": 22,
+    "category": "testing-09",
+    "status": true,
     "id": 9
   },
   {
     "title": "testing-10",
     "description": "testing-10",
-    "price": 210,
-    "thumbnail": "testing-10",
-    "code": "33210",
-    "stock": 210,
+    "price": 202,
+    "thumbnails": [
+      "testing-10"
+    ],
+    "code": "pro10",
+    "stock": 22,
+    "category": "testing-10",
+    "status": true,
     "id": 10
   }
 ]
