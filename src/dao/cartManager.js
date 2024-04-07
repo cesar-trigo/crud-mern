@@ -36,7 +36,7 @@ export default class CartManager {
 
       await this.sendFile(carts);
 
-      return "cart Loaded Successfully";
+      return newCart;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -75,7 +75,9 @@ export default class CartManager {
 
       await this.sendFile(carts);
 
-      return existingProduct !== -1 ? "Product quantity incremented" : "Product added to cart";
+      return existingProduct !== -1
+        ? { response: cartById, message: "Product quantity increased" }
+        : { response: cartById, message: "Product added to cart" };
     } catch (error) {
       throw new Error(error.message);
     }

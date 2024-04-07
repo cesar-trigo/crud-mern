@@ -12,8 +12,6 @@ router.get("/", async (req, res) => {
   let limit = Number(req.query.limit);
   let products = await productManager.getProducts();
   try {
-    // res.setHeader("Content-Type", "text/plain");
-
     if (req.query.limit !== undefined && isNaN(limit)) {
       return res.status(404).json({ error: "The limit parameter must be a valid number" });
     }
@@ -22,29 +20,36 @@ router.get("/", async (req, res) => {
       products = products.slice(0, limit);
     }
 
-    return res.status(200).json(products);
+    return res.status(200).json({
+      response: products,
+      success: true,
+      message: "products read successfully",
+    });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      success: false,
       message: error.message,
     });
   }
 });
 
 router.get("/:pid", async (req, res) => {
-  // res.setHeader("Content-Type", "text/plain");
   let { pid } = req.params;
   try {
     if (isNaN(pid) || pid <= 0) {
       return res.status(404).json({ error: "Product ID must be a positive integer" });
     }
 
-    return res.status(200).json(await productManager.getProductById(Number(pid)));
+    const product = await productManager.getProductById(Number(pid));
+
+    return res.status(200).json({
+      response: product,
+      success: true,
+      message: "product read successfully",
+    });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      success: false,
       message: error.message,
     });
   }
