@@ -118,7 +118,7 @@ export default class ProductManager {
 
       await this.sendFile(data);
 
-      return { message: "Product updated successfully", product: idProduct };
+      return idProduct;
     } catch (error) {
       throw new Error(error.message);
     }
