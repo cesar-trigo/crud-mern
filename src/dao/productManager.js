@@ -41,12 +41,18 @@ export default class ProductManager {
       if (products.some(product => product.code === newProduct.code)) {
         throw new Error("Repeated code");
       }
+      let missingProp = [];
 
       // Verificar que todos los campos estén presentes
       for (const prop in newProduct) {
         if (newProduct[prop] === undefined) {
-          throw new Error(`Field missing ${prop}`);
+          missingProp.push(prop); // Agregar la propiedad a la lista de faltantes
         }
+      }
+
+      if (missingProp.length > 0) {
+        const missingPropsString = missingProp.join(", "); // Convertir la lista en una cadena separada por guiones
+        throw new Error(`Fields missing: ${missingPropsString}`);
       }
 
       // Asignar un nuevo ID después de actualizar el archivo
@@ -59,7 +65,7 @@ export default class ProductManager {
       //y actualizar el archivo
       await this.sendFile(products);
 
-      return { message: "Product Loaded Successfully", product: newProduct };
+      return newProduct;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -112,7 +118,7 @@ export default class ProductManager {
 
       await this.sendFile(data);
 
-      return { message: "Product updated successfully", product: idProduct };
+      return idProduct;
     } catch (error) {
       throw new Error(error.message);
     }

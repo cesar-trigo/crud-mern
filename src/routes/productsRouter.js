@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
     typeNumber = [price, stock];
 
   try {
-    if (typeString.some(e => typeof e !== "string")) {
+    if (typeString.some(e => e !== undefined && typeof e !== "string")) {
       return res.status(404).json({ error: `formato invalido` });
     }
 
@@ -80,11 +80,14 @@ router.post("/", async (req, res) => {
 
     const result = await productManager.addProduct(req.body);
 
-    return res.status(201).json(result);
+    return res.status(201).json({
+      response: result,
+      success: true,
+      message: "product created successfully",
+    });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      success: false,
       message: error.message,
     });
   }
@@ -103,7 +106,7 @@ router.put("/:pid", async (req, res) => {
       return res.status(404).json({ error: "Product ID must be a positive integer" });
     }
 
-    if (typeString.some(e => typeof e !== "string")) {
+    if (typeString.some(e => e !== undefined && typeof e !== "string")) {
       return res.status(404).json({ error: `formato invalido` });
     }
 
@@ -111,7 +114,7 @@ router.put("/:pid", async (req, res) => {
       return res.status(404).json({ error: `formato invalido` });
     }
 
-    if (typeNumber.some(e => typeof e !== "number")) {
+    if (typeNumber.some(e => e !== undefined && typeof e !== "number")) {
       return res.status(404).json({ error: `formato invalido` });
     }
 
@@ -119,11 +122,16 @@ router.put("/:pid", async (req, res) => {
       return res.status(404).json({ error: `el numero no debe ser menor a 0` });
     }
 
-    return res.status(200).json(await productManager.updateProduct(Number(pid), req.body));
+    const result = await productManager.updateProduct(Number(pid), req.body);
+
+    return res.status(200).json({
+      response: result,
+      success: true,
+      message: "product updated successfully",
+    });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      success: false,
       message: error.message,
     });
   }
@@ -137,11 +145,16 @@ router.delete("/:pid", async (req, res) => {
       return res.status(404).json({ error: "Product ID must be a positive integer" });
     }
 
-    return res.status(200).json(await productManager.deleteProduct(Number(pid)));
+    const result = await productManager.deleteProduct(Number(pid));
+
+    return res.status(200).json({
+      response: result,
+      success: true,
+      message: "product deleted successfully",
+    });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      error: "Internal Server Error",
+    return res.status(404).json({
+      success: false,
       message: error.message,
     });
   }
