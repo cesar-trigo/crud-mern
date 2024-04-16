@@ -1,7 +1,7 @@
 import { Router } from "express";
 import ProductManager from "../dao/productManager.js";
 import { join } from "path";
-import __dirname from "../utils.js";
+import __dirname, { upload } from "../utils.js";
 
 // Inicialización de recursos
 const router = Router();
@@ -55,30 +55,34 @@ router.get("/:pid", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
-  const { title, description, code, price, stock, thumbnails, category } = req.body;
+router.post("/", upload.array("thumbnails"), async (req, res) => {
+  const { title, description, code, price, stock, category } = req.body;
 
+  const thumbnails = req.files ? req.files.map(file => file.path) : undefined;
   const typeString = [title, description, code, category],
-    typeNumber = [price, stock];
+    typeNumber = [Number(price), Number(stock)];
 
   try {
     if (typeString.some(e => e !== undefined && typeof e !== "string")) {
-      return res.status(404).json({ error: `formato invalido` });
+      return res.status(404).json({ error: `formato invalido1` });
     }
 
-    if (thumbnails && thumbnails.some(e => typeof e !== "string")) {
-      return res.status(404).json({ error: `formato invalido` });
-    }
+    /*     if (thumbnails && thumbnails.some(e => e !== undefined && typeof e !== "string")) {
+      return res.status(404).json({ error: `formato invalido2` });
+    } */
 
-    if (typeNumber.some(e => typeof e !== "number")) {
-      return res.status(404).json({ error: `formato invalido` });
+    if (typeNumber.some(e => e !== undefined && isNaN(e))) {
+      return res.status(404).json({ error: `formato invalido3 ${thumbnails}` });
     }
 
     if (typeNumber.some(e => e < 0)) {
       return res.status(404).json({ error: `el numero no debe ser menor a 0` });
     }
 
-    const result = await productManager.addProduct(req.body);
+    console.log(req.file);
+    console.log(req.body);
+
+    const result = await productManager.addProduct(req.body, thumbnails);
 
     return res.status(201).json({
       response: result,

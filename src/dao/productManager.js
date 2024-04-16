@@ -23,7 +23,7 @@ export default class ProductManager {
   };
 
   // METODO PARA AGREGAR PRODUCTOS
-  addProduct = async obj => {
+  addProduct = async (obj, thumbnails) => {
     try {
       let products = await this.readFile();
       //configuro el obj
@@ -31,7 +31,7 @@ export default class ProductManager {
         title: obj.title,
         description: obj.description,
         price: obj.price,
-        thumbnails: obj.thumbnails ?? [],
+        thumbnails: thumbnails ?? [],
         code: obj.code,
         stock: obj.stock,
         category: obj.category,
