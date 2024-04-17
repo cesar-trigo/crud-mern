@@ -2,7 +2,7 @@ import { Router } from "express";
 import ProductManager from "../dao/productManager.js";
 import { join } from "path";
 import __dirname, { upload } from "../utils.js";
-
+import { io as serverSocket } from "../app.js";
 // Inicialización de recursos
 const router = Router();
 const filepath = join(__dirname, "data", "products.json");
@@ -79,10 +79,9 @@ router.post("/", upload.array("thumbnails"), async (req, res) => {
       return res.status(404).json({ error: `el numero no debe ser menor a 0` });
     }
 
-    console.log(req.file);
-    console.log(req.body);
-
     const result = await productManager.addProduct(req.body, thumbnails);
+
+    serverSocket.emit("newProduct", result);
 
     return res.status(201).json({
       response: result,
@@ -150,6 +149,8 @@ router.delete("/:pid", async (req, res) => {
     }
 
     const result = await productManager.deleteProduct(Number(pid));
+
+    serverSocket.emit("deleteProduct", result);
 
     return res.status(200).json({
       response: result,

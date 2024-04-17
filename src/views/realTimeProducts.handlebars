@@ -1,0 +1,16 @@
+<h2>REAL TIME PRODUCT</h2>
+<hr/>
+<br/><br/>
+<a class="homepage" href="/">Home</a>
+<br/><br/>
+
+<div class="container">
+  <ul id="ul-productos">
+    {{#each productRea}}
+      <li>{{title}}</li>
+    {{/each}}
+  </ul>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+

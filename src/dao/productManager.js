@@ -128,14 +128,14 @@ export default class ProductManager {
   deleteProduct = async prodId => {
     try {
       const data = await this.readFile();
-
+      const idProduct = data.find(produc => produc.id === prodId);
       const productById = data.findIndex(e => e.id === prodId);
 
       return !(productById >= 0)
         ? (() => {
             throw new Error(`Not found`);
           })()
-        : (data.splice(productById, 1), await this.sendFile(data));
+        : (data.splice(productById, 1), await this.sendFile(data), idProduct);
     } catch (error) {
       throw new Error(error.message);
     }
