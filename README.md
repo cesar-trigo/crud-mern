@@ -1,2 +1,4 @@
 # crud-mern:
--
+-express
+-mongodb
+
