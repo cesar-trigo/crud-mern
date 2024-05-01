@@ -16,3 +16,10 @@ socket.on("deleteProduct", obj => {
     productList.removeChild(productElement);
   }
 });
+
+socket.on("productModification", obj => {
+  const productElement = document.getElementById(`product-${obj.id}`);
+  if (productElement) {
+    productElement.textContent = obj.title;
+  }
+});
