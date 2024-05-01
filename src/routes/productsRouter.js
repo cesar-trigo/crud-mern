@@ -127,6 +127,9 @@ router.put("/:pid", async (req, res) => {
 
     const result = await productManager.updateProduct(Number(pid), req.body);
 
+    serverSocket.emit("productModification", result);
+    console.log(result);
+
     return res.status(200).json({
       response: result,
       success: true,
