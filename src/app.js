@@ -3,7 +3,7 @@ import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import productsRouter from "./routes/productsRouter.js";
 import cartsRouter from "./routes/cartsRouter.js";
-import { router as viewsRouter } from "./routes/views.router.js";
+import { router as viewsOnRouter } from "./routes/views.router.js";
 
 const PORT = 8080;
 const app = express();
@@ -18,7 +18,7 @@ app.set("views", "./src/views");
 
 app.use("/api/products", productsRouter);
 app.use("/api/carts/", cartsRouter);
-app.use("/", viewsRouter);
+app.use("/", viewsOnRouter);
 
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
